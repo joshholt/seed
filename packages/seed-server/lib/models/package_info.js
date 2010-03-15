@@ -73,6 +73,7 @@ PackageInfo.findAll = function(done) {
   var path = Co.path.join(server.root, 'packages');
   Co.fs.glob(path, function(err, filenames) {
     if (err) return done(err);
+    if (!filenames) filenames = [];
     Co.reduce(filenames, [], function(ret, filename, done) {
       if (!filename.match(/\.json$/)) return done(null, ret); //nothing to do
       filename = filename.slice(0, -5); // cut .json
@@ -124,7 +125,6 @@ PackageInfo.install = function(pkg, srcPath, currentUser, done) {
   var assetFilename = pkg.name() + '-' + pkg.version() + '.zip';
   
   Co.chain(function(done) {
-    done();
     PackageInfo.find(packageId, function(err, packageInfo) {
       if (!err && packageInfo) {
         err = {
