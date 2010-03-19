@@ -19,10 +19,10 @@ var O_RWX = 511; //0777
 // Step 1: Configure and build native extensions
 Co.chain(function(done) {
   var cmd = 'cd '+SEED_DIR+'; node-waf configure build';
-  Co.sys.puts(cmd);
-  Co.sys.exec(cmd, function(err, str) {
+  Co.println(cmd);
+  Co.exec(cmd, function(err, str) {
     if (err) return done(err);
-    Co.sys.puts(str);
+    Co.println(str);
     return done();
   });
 
@@ -44,11 +44,11 @@ Co.chain(function(done) {
 
     Co.path.exists(path, function(err, exists) {
       if (exists && !process.env.FORCE) {
-        Co.sys.puts('WARNING: ~/.node_libraries/seed already exists');
+        Co.println('WARNING: ~/.node_libraries/seed already exists');
         return done();
         
       } else {
-        Co.sys.exec(cmd, Co.err(done));
+        Co.exec(cmd, Co.err(done));
       }
     });
 
@@ -71,11 +71,11 @@ Co.chain(function(done) {
 
         Co.path.exists(dst, function(err, exists) {
           if (exists && !process.env.FORCE) {
-            Co.sys.puts('~/.seed/bin/'+filename+' already exists');
+            Co.println(dst+' already exists');
             return done(); // skip
           } else {
-            Co.sys.puts(cmd);
-            Co.sys.exec(cmd, Co.err(done));
+            Co.println(cmd);
+            Co.exec(cmd, Co.err(done));
           }
         });
         
@@ -86,6 +86,6 @@ Co.chain(function(done) {
 
   
 })(function(err) {
-  if (err) Co.sys.puts("Failed: " + err);
-  else Co.sys.puts("Done");
+  if (err) Co.println("Failed: " + err);
+  else Co.println("Done.  If you haven't already, add "+SEED_REPO_BIN+' to your PATH to use seed commands');
 });
